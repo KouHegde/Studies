@@ -118,16 +118,18 @@ public class BFS {
 
         List<Integer> ans  = new ArrayList<>();
         boolean[] visited  = new boolean[adj.size()];
-        visited[root] = true;
+
         dfsCalc(ans,visited,adj,root);
         return ans;
     }
 
     private static void dfsCalc(List<Integer> ans, boolean[] visited, List<List<Integer>> adj, int root) {
+
+        visited[root] = true;
         ans.add(root);
+
         for(int n : adj.get(root)){
-            if(!visited[root]){
-                visited[root] = true;
+            if(!visited[n]){
                 dfsCalc(ans, visited, adj, n);
             }
         }

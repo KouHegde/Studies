@@ -1,68 +1,63 @@
-package org.example.Study.Tree;
+package org.example.Study.Graphs;
 
-
-import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
-
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Solution {
 
-    static class Pair {
-        int node;
-        double prob;
-
-        Pair(int node, double prob) {
-            this.node = node;
-            this.prob = prob;
+    static class Node {
+        int r, c, dist;
+        Node(int r, int c, int dist) {
+            this.r = r;
+            this.c = c;
+            this.dist = dist;
         }
     }
 
-    double maxProb(int[][] graph, int[] prob, int size, int start, int end) {
-        List<List<Pair>> adj = getAdj(graph, size, prob);
+    public int shortestPath(
+            int[][] grid,
+            int sr, int sc,
+            int dr, int dc
+    ) {
+        int n = grid.length;
+        int m = grid[0].length;
 
-        double[] maxProb = new double[size];
-        maxProb[start] = 1.0;
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> Double.compare(b.prob, a.prob));
-        pq.add(new Pair(start, 1.0));
+        int[][] dist = new int[n][m];
+        for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
 
-        while (!pq.isEmpty()) {
-            Pair curr = pq.poll();
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(sr, sc, 0));
+        dist[sr][sc] = 0;
 
-            if (curr.node == end) return curr.prob;
+        int[] dRow = {-1, 0, 1, 0};
+        int[] dCol = {0, 1, 0, -1};
 
-            if (curr.prob < maxProb[curr.node]) continue;
+        while (!q.isEmpty()) {
+            Node curr = q.poll();
 
-            for (Pair neigh : adj.get(curr.node)) {
-                double max = curr.prob * neigh.prob;
-                if (max > maxProb[neigh.node]) {
-                    maxProb[neigh.node] = max;
-                    pq.add(new Pair(neigh.node, max));
+            int r = curr.r;
+            int c = curr.c;
+            int d = curr.dist;
+
+
+            if (r == dr && c == dc) return d;
+
+            for (int i = 0; i < 4; i++) {
+                int nr = r + dRow[i];
+                int nc = c + dCol[i];
+
+                if (nr >= 0 && nr < n &&
+                        nc >= 0 && nc < m &&
+                        grid[nr][nc] == 1 &&
+                        d + 1 < dist[nr][nc]) {
+
+                    dist[nr][nc] = d + 1;
+                    q.add(new Node(nr, nc, d + 1));
                 }
-
             }
-
         }
-        return 0.0;
+
+        return -1; // destination not reachable
     }
-
-    List<List<Pair>> getAdj(int[][] graph, int size, int[] weight) {
-        List<List<Pair>> adjList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            adjList.add(new ArrayList<>());
-        }
-
-        for (int i = 0 ; i < size; i++) {
-            int u = graph[i][0];
-            int v = graph[i][1];
-            int w = weight[i];
-            adjList.get(u).add(new Pair(v, w));
-            adjList.get(v).add(new Pair(u, w));
-        }
-        return adjList;
-    }
-
-    //[(1,2)(2,3)(1,3)]
-    //[0.5, 0.5, 0.25]
 }
