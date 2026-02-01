@@ -53,19 +53,21 @@ public class Kadane {
     }
 
 
-    public int kadane(int[] nums){
+    public int kadaneL(int[] nums){
+        int ans  = Integer.MIN_VALUE;
         int sum = 0;
-        int max = Integer.MIN_VALUE;
-        for (int n:nums){
-            sum+=n;
-            if(sum>max){
-                max = sum;
-            }
-            if(sum<0){
-                sum=0;
-            }
+
+        for(int n : nums){
+
+            sum = sum+n;
+
+            ans = Math.max(sum,ans);
+
+            if(sum<0) sum = 0;
+
         }
-        return max;
+
+       return ans;
     }
 
 

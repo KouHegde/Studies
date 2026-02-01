@@ -1,9 +1,6 @@
 package org.example.Study.LeetCode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TwoSum {
 
@@ -14,21 +11,22 @@ public class TwoSum {
 
     }
 
-    public static List<Integer> twoSumCalculation(int[] nums, int target){
-        HashMap<Integer,Integer>  map  = new HashMap<>();
-        List<Integer> ans = new ArrayList<>();
+    public static List<Integer> twoSum(int[] nums, int target) {
+        if (nums.length < 2) return null;
 
-        for(int i = 0; i<nums.length; i++){
-            int diff  = target - nums[i];
-            if(map.containsKey(diff)){
-                ans.add(nums[i]);
-                ans.add(diff);
-                return ans;
-            } else{
-                map.put(nums[i],diff);
+        HashSet<Integer> seen = new HashSet<>();
+
+        for (int num : nums) {
+            int diff = target - num;
+
+            if (seen.contains(diff)) {
+                return Arrays.asList(diff, num); // pair found
             }
+
+            seen.add(num);
         }
-        return ans;
+
+        return new ArrayList<>(); // no pair found
     }
 
     public static List<Integer> twoSum1(int[] nums, int target){
@@ -54,7 +52,7 @@ public class TwoSum {
 
 
 
-    public static List<Integer> twoSum(int[] nums,int target){
+    public static List<Integer> twoSumxqsx(int[] nums,int target){
 
         Arrays.sort(nums);
          int left  = 0;

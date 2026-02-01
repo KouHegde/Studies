@@ -41,5 +41,50 @@ public class RottenOranges {
          rDfs(i,j+1,grid,check,counter+1);
     }
 
-    
+
+
+    public int rottenOranges(int[][] grid ){
+        int m  = grid.length;
+        int n = grid[0].length;
+
+        int[][]check = new int[m][n];
+
+        for(int i = 0 ; i < m ; i++){
+            for(int j = 0; j < n ; j++){
+                check[i][j] = Integer.MAX_VALUE;
+            }
+        }
+
+        for(int i  = 0 ; i < m; i++){
+            for(int j = 0; j < n ; j++){
+                if(grid[i][j] == 2){
+                    rottenDfs(i,j,check, grid, 0);
+                }
+            }
+        }
+        int max = 0;
+        for(int i  = 0 ; i < m; i++){
+            for (int j = 0; j < n ; j++){
+                if(grid[i][j] == 1) {
+                    if (check[i][j] == Integer.MAX_VALUE) return -1;
+                    max = Math.max(max, check[i][j]);
+
+                }
+            }
+        }
+
+        return max;
+    }
+
+    private void rottenDfs(int i, int j, int[][] check, int[][] grid, int counter) {
+        if(i < 0 || j < 0 || i>= grid.length || j >= grid[0].length || grid[i][j] ==0 || counter >= check[i][j]) return;
+        check[i][j] = counter;
+
+        rottenDfs(i-1,j,check,grid,counter+1);
+        rottenDfs(i+1,j,check,grid,counter+1);
+        rottenDfs(i,j-1,check,grid,counter+1);
+        rottenDfs(i,j+1,check,grid,counter+1);
+    }
+
+
 }

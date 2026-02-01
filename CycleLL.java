@@ -20,19 +20,18 @@ public class CycleLL {
         return true;
     }
 
-    public static boolean isCyclicLL(Node head){
-        if(head == null || head.next == null) return false;
+    public static boolean cycleExit(Ll node){
+        if(node == null || node.next == null) return false;
 
-        Node slow  = head;
-        Node fast = head.next;
+        Ll sl = node;
+        Ll fast = node.next;
 
-        while(slow != fast){
-            if(fast == null || fast.next == null) return false;
-            slow = slow.next;
-            fast =fast.next.next;
+        while (sl != fast){
+            if(fast == null && sl == null) return false;
 
+            sl = sl.next;
+            fast = fast.next.next;
         }
         return true;
-
     }
 }

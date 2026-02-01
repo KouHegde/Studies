@@ -12,7 +12,7 @@ public class KTHLargest {
         for(int i = 0 ; i<k; i++){
             queue.add(nums[i]);
         }
-        for(int i  = 2 ; i < nums.length; i++){
+        for(int i  = k ; i < nums.length; i++){
             if(queue.peek() < nums[i]){
                 queue.poll();
                 queue.add(nums[i]);
@@ -50,5 +50,20 @@ public class KTHLargest {
             }
         }
         return min.peek();
+    }
+
+    public static int kths(int[] nums, int k ){
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+        for(int i = 0 ; i< k ; i++){
+            priorityQueue.add(nums[i]);
+        }
+
+        for (int i = k; i < nums.length; i++){
+            if (priorityQueue.peek() > nums[i]){
+                priorityQueue.poll();
+                priorityQueue.add(nums[i]);
+            }
+        }
+        return priorityQueue.poll();
     }
 }

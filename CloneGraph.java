@@ -60,25 +60,28 @@ public class CloneGraph {
 
 
 
-//
-//    public Node cloneGraph(Node head){
-//        if(head == null || head.neighbors == null) return head;
-//        Map<Node,Node> map = new HashMap<>();
-//        return cloneUtil1(head,map);
-//    }
-//    public Node cloneUtil1(Node node, Map<Node,Node> map){
-//        Node newNode = new Node(node.val);
-//        map.put(node,newNode);
-//        for (Node n1: node.neighbors){
-//            if(map.containsKey(n1)){
-//                newNode.neighbors.add(n1);
-//            } else {
-//                newNode.neighbors.add(cloneUtil(n1,map));
-//            }
+
+    public Node clone(Node head){
+        if (head == null) return null;
+
+        Map<Node, Node> map = new HashMap<>();
+        return cloneUtil(head, map);
+    }
+
+//    private Node cloneUtil(Node node, Map<Node, Node> map) {
+//        if (map.containsKey(node)) {
+//            return map.get(node);
 //        }
+//
+//        Node newNode = new Node(node.val);
+//        map.put(node, newNode);
+//
+//        for (Node neigh : node.neighbors) {
+//            newNode.neighbors.add(cloneUtil(neigh, map));
+//        }
+//
 //        return newNode;
 //    }
-//
 
 
 //    public static Node clone(Node head){
@@ -99,6 +102,21 @@ public class CloneGraph {
 //        }
 //        return newNode;
 //    }
+
+
+    public Node cloneUtil(Node node,Map<Node,Node> map){
+        if(map.containsKey(node)){
+            return map.get(node);
+        }
+
+        Node newNode = new Node(node.val);
+        map.put(node, newNode);
+
+        for(Node neigh :node.neighbors){
+            newNode.neighbors.add(cloneUtil(neigh,map));
+        }
+        return  newNode;
+    }
 
 
 }
