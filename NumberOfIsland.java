@@ -35,15 +35,17 @@ public class NumberOfIsland {
         int count  = 0;
         for(int i = 0; i < grid.length; i++){
             for(int j  = 0; j< grid[0].length;j++){
-                dfsIslands(i,j,grid);
-                count++;
+                if(grid[i][j] == 1) {
+                    dfsIslands(i, j, grid);
+                    count++;
+                }
             }
         }
         return count;
     }
 
     private static void dfsIslands(int i, int j, int[][] grid) {
-        if(i<0||j<0||i > grid.length || j > grid[0].length || grid[i][j]==0) return;
+        if(i<0||j<0||i >= grid.length || j >= grid[0].length || grid[i][j]==0) return;
         grid[i][j] =0;
         dfsIslands(i-1,j,grid);
         dfsIslands(i,j-1,grid);

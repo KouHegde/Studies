@@ -19,14 +19,7 @@ public class GroupAnagram {
         Map<String,List<String>> freqMap = new HashMap<>();
         for(String s : inputString){
           String freqString = getFrequencyString(s);
-
-          if(freqMap.containsKey(freqString)){
-              freqMap.get(freqString).add(s);
-          } else{
-              List<String> list = new ArrayList<>();
-              list.add(s);
-              freqMap.put(freqString,list);
-          }
+          freqMap.getOrDefault(freqString,new ArrayList<>()).add(s);
         }
         return new ArrayList<>(freqMap.values());
     }
@@ -43,52 +36,58 @@ public class GroupAnagram {
         StringBuilder sb = new StringBuilder();
         char c = 'a';
         for(int i : freq){
-            sb.append(c);
-            sb.append(i);
+            if (i > 0) {
+                sb.append(c);
+                sb.append(i);
+            }
             c++;
         }
         return sb.toString();
     }
 
-
-
-
-    public static List<List<String>> groupAna(String[] strings){
-        if(strings == null) return  new ArrayList<>();
+    public List<List<String>> groupAnagram(List<String> words){
+        if(words == null) return null;
 
         Map<String,List<String>> map = new HashMap<>();
-        for(String s : strings){
-            String freqString  = getFreq(s);
 
-            if(map.containsKey(freqString)){
-                map.get(freqString).add(s);
+        for(String word : words){
+            String freq = getFreqMap(word);
+
+            if(map.containsKey(freq)){
+                map.get(freq).add(word);
             } else{
-                List<String> list = new ArrayList<>();
-                list.add(s);
-                map.put(freqString,list);
+                map.put(freq,new ArrayList<>());
+                map.get(freq).add(word);
             }
-
         }
+
         return new ArrayList<>(map.values());
 
     }
 
-    private static String getFreq(String s) {
-        if(s==null) return "";
+    private String getFreqMap(String word) {
+        if(word == null) return "";
 
-        int[] freq = new int[26];
+        int[] alpha = new int[26];
 
-        for(Character c: s.toCharArray()){
-            freq['a'-c]++;
+        for(Character ch : word.toCharArray()){
+            alpha[ch - 'a']++;
         }
 
+        char ch = 'a';
         StringBuilder sb = new StringBuilder();
-        char c = 'a';
-        for(int n: freq){
-            sb.append(c);
-            sb.append(n);
-            c++;
+
+        for(int i : alpha){
+            if(alpha[i] != 0){
+                sb.append(ch);
+                sb.append(alpha[i]);
+            }
+            ch++;
         }
         return sb.toString();
+
+
     }
+
+
 }

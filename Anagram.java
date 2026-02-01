@@ -62,6 +62,24 @@ public class Anagram {
 
     }
 
+    public boolean isAnAnagram(String s1, String s2){
+        if(s1.length() != s2.length()) return false;
+        Map<Character,Integer> f1 =new HashMap<>();
+
+
+        for(int  i = 0 ; i<s1.length() ;i++){
+            f1.put(s1.charAt(i), f1.getOrDefault(s1.charAt(i),0)+1);
+            f1.put(s2.charAt(i), f1.getOrDefault(s2.charAt(i),0)-1);
+        }
+
+        for(int val : f1.values()){
+            if(val != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 
 }

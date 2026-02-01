@@ -6,8 +6,8 @@ import java.util.Stack;
 
 public class Topological {
 
-    public static List<Integer> topological(int[][] graph){
-        List<List<Integer>>adj = getAdjList(graph);
+    public static List<Integer> topological(int[][] graph, int size, int[] prob){
+        List<List<Integer>>adj = getAdjList(graph, size, prob);
         int[] arr = new int[graph.length];
         Stack<Integer> s = new Stack<>();
         for(int i  =0; i< graph.length; i++){
@@ -32,7 +32,7 @@ public class Topological {
         s.push(start);
     }
 
-    private static List<List<Integer>> getAdjList(int[][] graph){
+    private static List<List<Integer>> getAdjList(int[][] graph, int size, int[] prob){
         List<List<Integer>> adj = new ArrayList<>();
         for(int i  = 0; i< graph.length; i++){
             adj.add(new ArrayList<>());

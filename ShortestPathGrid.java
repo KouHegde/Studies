@@ -42,6 +42,7 @@ public class ShortestPathGrid {
             int row = tuple.second;
             int col = tuple.third;
 
+            if (row == dest[0] && col == dest[1]) return  dis;
             for (int i = 0; i < 4; i++) {
 
                 int newr = row + dr[i];
@@ -49,7 +50,6 @@ public class ShortestPathGrid {
 
                 if (newr >= 0 && newr < n && newc >= 0 && newc < m && grid[newr][newc] == 1 && 1 + dis < dist[newr][newc]) {
                     dist[newr][newc] = 1 + dis;
-                    if (newr == dest[0] && newc == dest[1]) return 1 + dis;
                     q.add(new Tuple(1 + dis, newr, newc));
                 }
             }

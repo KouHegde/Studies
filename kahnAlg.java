@@ -1,64 +1,50 @@
 package org.example.Study.LeetCode;
 
+
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.PriorityQueue;
+
+
 
 public class kahnAlg {
 
+  public static List<Integer> kahn(int[][] graph, int size){
+      int[] indegree = new int[size];
 
-    public static Degree getDegreeClass(int[][] graph){
-        int maxNode = 0;
-        for (int[] edge : graph) {
-            maxNode = Math.max(maxNode, Math.max(edge[0], edge[1]));
-        }
+      List<List<Integer>> adj = getAdj(graph,size,indegree);
+      PriorityQueue<Integer> q = new PriorityQueue<>();
 
-        Degree degree = new Degree();
-        degree.adj = new ArrayList<>();
-        degree.indegree = new int[maxNode + 1];
+      for(int i = 0 ; i < size; i++){
+          if(indegree[i] == 0) q.add(i);
+      }
+      List<Integer> top = new ArrayList<>();
+      while (!q.isEmpty()){
+          int curr = q.poll();
+          top.add(curr);
+          for(int neigh : adj.get(curr)){
+              indegree[neigh] --;
+              if(indegree[neigh] == 0) q.add(neigh);
+          }
 
-        for (int i = 0; i <= maxNode; i++) {
-            degree.adj.add(new ArrayList<>());
-        }
+      }
+      return size==top.size() ? top : new ArrayList<>();
+  }
 
-        for (int[] edge : graph) {
-            int u = edge[0];
-            int v = edge[1];
-            degree.indegree[v]++;
-            degree.adj.get(u).add(v);
-        }
+    private static List<List<Integer>> getAdj(int[][] graph, int size, int[] indegree) {
+      List<List<Integer>> adj = new ArrayList<>();
+      for(int i = 0; i < size; i++){
+          adj.add(new ArrayList<>());
+      }
+      for(int[] n : graph){
+          int u = n[0];
+          int v = n[1];
 
-        return degree;
+          adj.get(u).add(v);
+          adj.get(v).add(u);
+          indegree[v]++;
+      }
+      return adj;
     }
 
-    public static int[] kahn(Degree degree){
-        List<List<Integer>> adj  = degree.adj;
-        Queue<Integer> queue = new LinkedList<>();
-
-        for (int node = 0; node < degree.indegree.length; node++) {
-            if (degree.indegree[node] == 0) {
-                queue.add(node);
-            }
-        }
-
-        int i  = 0;
-        int[] top  = new int[degree.adj.size()];
-
-        while(!queue.isEmpty()){
-            int curr = queue.peek();
-            queue.remove();
-            top[i] = curr;
-            i++;
-            for(int n : adj.get(curr)){
-                degree.indegree[n]--;
-                if(degree.indegree[n] == 0){
-                    queue.add(n);
-
-                }
-            }
-
-        }
-        return  top;
-    }
 }
