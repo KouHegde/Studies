@@ -1,0 +1,64 @@
+package org.example.Study.LeetCode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+public class AlienDictionary {
+
+    public static String alienDict(List<String> dict,int k, int n){
+        int[] inDegree = new int[k];
+        List<List<Integer>> adj = new ArrayList<>();
+
+        for(int i = 0; i < k; i++){
+            adj.add(new ArrayList<>());
+        }
+
+        for(int i = 0; i < n-1; i++){
+            String s1 = dict.get(i);
+            String s2 = dict.get(i+1);
+
+            if(s1.length() > s2.length() && s1.startsWith(s2)){
+                return "";
+            }
+
+            for(int j = 0; j < Math.min(s1.length(), s2.length()); j++){
+                if(s1.charAt(j) != s2.charAt(j)){
+                    adj.get(s1.charAt(j) - 'a').add(s2.charAt(j) - 'a');
+                    inDegree[s2.charAt(j) - 'a']++;
+                    break; // important
+                }
+            }
+        }
+
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+
+        for(int i = 0; i < k; i++){
+            if(inDegree[i] == 0){
+                q.add(i);
+            }
+        }
+
+        List<Integer> topo = new ArrayList<>();
+
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            topo.add(curr);
+
+            for(int neigh : adj.get(curr)){
+                inDegree[neigh]--;
+                if(inDegree[neigh] == 0){
+                    q.add(neigh);
+                }
+            }
+        }
+
+        if(topo.size() != k) return "";
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < topo.size(); i++){
+            sb.append((char)(topo.get(i) + 'a'));
+        }
+
+        return sb.toString();
+    }
+}
